@@ -1,3 +1,5 @@
+###Credit to all open source code###
+
 # import libraries 
 import RPi.GPIO as gpio
 import time
@@ -26,21 +28,15 @@ def startAll():
     gpio.output(7,1)
     gpio.output(10,1)
 
-# turn on left motor
-def leftOn():
+#Move Left
+def moveLeft():
     gpio.output(7,1)
-    
-# turn off left motor
-def leftOff():
-    gpio.output(7,0)
+    gpio.output(10,0)
   
 # turn on right motor
-def rightOn():
+def moveRight():
     gpio.output(10,1)
-
-#turn off right motor
-def rightOff():
-    gpio.output(10,0)
+    gpio.output(7,0)
 
 # turn off all motors
 def stopAll():
@@ -86,8 +82,6 @@ file_name = "/home/pi/Videos/video_" + str(time.time()) + ".h264"
 stopAll()   # make sure all pin are set to off
 
 x = input()
-
-
 #if __name__ == '__main__':
 if x == 'm':
     try:
@@ -100,18 +94,16 @@ if x == 'm':
                 stopAll()
                 
             # if both sensors are on then turn both motors on
-            if gpio.input(leftSensor)== 0 and gpio.input(rightSensor)==0:
+            elif gpio.input(leftSensor)== 0 and gpio.input(rightSensor)==0:
                 startAll()
                 
             # if left sensor is on turn right motor off (pivot left)
-            if gpio.input(leftSensor)==0 and gpio.input(rightSensor)==1:
-                leftOn()
-                rightOff()
+            elif gpio.input(leftSensor)==0 and gpio.input(rightSensor)==1:
+                moveLeft()
                 
             # if right sensor is on turn left motor off (pivot right)
-            if gpio.input(leftSensor)==1 and gpio.input(rightSensor)==0:
-                leftOff()
-                rightOn()
+            elif gpio.input(leftSensor)==1 and gpio.input(rightSensor)==0:
+                moveRight()
                 
             if dist < 15:
                 stopAll()
